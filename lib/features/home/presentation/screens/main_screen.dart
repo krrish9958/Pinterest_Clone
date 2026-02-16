@@ -21,6 +21,11 @@ class _MainScreenState extends State<MainScreen> {
     _SimpleCenterScreen(title: 'Messages', icon: Icons.chat_bubble_outline_rounded),
   ];
 
+  void _setIndex(int value) {
+    if (_index == value || !mounted) return;
+    setState(() => _index = value);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,35 +49,45 @@ class _MainScreenState extends State<MainScreen> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              _NavIcon(
+              Expanded(
+                child: _NavIcon(
                 icon: CupertinoIcons.house,
                 selectedIcon: CupertinoIcons.house_fill,
                 selected: _index == 0,
-                onTap: () => setState(() => _index = 0),
+                onTap: () => _setIndex(0),
+                ),
               ),
-              _NavIcon(
+              Expanded(
+                child: _NavIcon(
                 icon: CupertinoIcons.search,
                 selectedIcon: CupertinoIcons.search,
                 selected: _index == 1,
-                onTap: () => setState(() => _index = 1),
+                onTap: () => _setIndex(1),
+                ),
               ),
-              _NavIcon(
+              Expanded(
+                child: _NavIcon(
                 icon: CupertinoIcons.add,
                 selectedIcon: CupertinoIcons.add,
                 selected: _index == 2,
-                onTap: () => setState(() => _index = 2),
+                onTap: () => _setIndex(2),
+                ),
               ),
-              _NavIcon(
+              Expanded(
+                child: _NavIcon(
                 icon: CupertinoIcons.chat_bubble,
                 selectedIcon: CupertinoIcons.chat_bubble_fill,
                 selected: _index == 3,
-                onTap: () => setState(() => _index = 3),
+                onTap: () => _setIndex(3),
+                ),
               ),
-              _NavIcon(
+              Expanded(
+                child: _NavIcon(
                 icon: CupertinoIcons.person_crop_circle,
                 selectedIcon: CupertinoIcons.person_crop_circle_fill,
                 selected: false,
                 onTap: _showProfileSheet,
+                ),
               ),
             ],
           ),
@@ -223,15 +238,20 @@ class _NavIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkResponse(
       onTap: onTap,
+      radius: 26,
+      containedInkWell: true,
+      highlightShape: BoxShape.circle,
+      splashColor: Colors.black12,
       child: SizedBox(
-        width: 32,
-        height: 32,
-        child: Icon(
-          selected ? selectedIcon : icon,
-          color: selected ? Colors.black : Colors.black87,
-          size: 25,
+        height: double.infinity,
+        child: Center(
+          child: Icon(
+            selected ? selectedIcon : icon,
+            color: selected ? Colors.black : Colors.black87,
+            size: 25,
+          ),
         ),
       ),
     );
