@@ -23,8 +23,15 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/detail',
         builder: (context, state) {
-          final extra = state.extra as Map<String, dynamic>;
-          return PinDetailScreen(id: extra['id'], imageUrl: extra['imageUrl']);
+          final data = state.extra as Map<String, dynamic>;
+          final rawId = data['id'];
+          final pinId = rawId is int ? rawId : int.tryParse(rawId.toString()) ?? 0;
+          return PinDetailScreen(
+            id: pinId,
+            imageUrl: data['imageUrl'],
+            author: (data['author'] ?? '').toString(),
+            title: (data['title'] ?? '').toString(),
+          );
         },
       ),
     ],
