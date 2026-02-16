@@ -11,6 +11,15 @@ class HomeRepositoryImpl implements HomeRepository {
   @override
   Future<List<PinEntity>> getPins({int page = 1}) async {
     final pins = await remoteDataSource.fetchPins(page: page);
-    return pins.map((e) => PinEntity(id: e.id, imageUrl: e.imageUrl)).toList();
+    return pins
+        .map(
+          (e) => PinEntity(
+            id: e.id,
+            imageUrl: e.imageUrl,
+            author: e.author,
+            title: e.title,
+          ),
+        )
+        .toList();
   }
 }

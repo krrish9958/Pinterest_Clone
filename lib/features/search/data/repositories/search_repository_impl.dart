@@ -15,7 +15,14 @@ class SearchRepositoryImpl implements SearchRepository {
     final pins = await remoteDataSource.searchPins(query: query, page: page);
 
     return pins
-        .map((e) => SearchPinEntity(id: e.id, imageUrl: e.imageUrl))
+        .map(
+          (e) => SearchPinEntity(
+            id: e.id,
+            imageUrl: e.imageUrl,
+            author: e.author,
+            title: e.title,
+          ),
+        )
         .toList();
   }
 }

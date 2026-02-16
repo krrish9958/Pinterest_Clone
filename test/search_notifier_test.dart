@@ -12,9 +12,23 @@ class _FakeSearchRepository implements SearchRepository {
   }) async {
     if (query.isEmpty) return [];
     if (page == 1) {
-      return [SearchPinEntity(id: 10, imageUrl: 'https://example.com/10.jpg')];
+      return [
+        SearchPinEntity(
+          id: 10,
+          imageUrl: 'https://example.com/10.jpg',
+          author: 'Author 10',
+          title: 'Title 10',
+        ),
+      ];
     }
-    return [SearchPinEntity(id: 11, imageUrl: 'https://example.com/11.jpg')];
+    return [
+      SearchPinEntity(
+        id: 11,
+        imageUrl: 'https://example.com/11.jpg',
+        author: 'Author 11',
+        title: 'Title 11',
+      ),
+    ];
   }
 }
 

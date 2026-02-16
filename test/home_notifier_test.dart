@@ -9,12 +9,29 @@ class _FakeHomeRepository implements HomeRepository {
   Future<List<PinEntity>> getPins({int page = 1}) async {
     if (page == 1) {
       return [
-        PinEntity(id: 1, imageUrl: 'https://example.com/1.jpg'),
-        PinEntity(id: 2, imageUrl: 'https://example.com/2.jpg'),
+        PinEntity(
+          id: 1,
+          imageUrl: 'https://example.com/1.jpg',
+          author: 'Author 1',
+          title: 'Title 1',
+        ),
+        PinEntity(
+          id: 2,
+          imageUrl: 'https://example.com/2.jpg',
+          author: 'Author 2',
+          title: 'Title 2',
+        ),
       ];
     }
 
-    return [PinEntity(id: 3, imageUrl: 'https://example.com/3.jpg')];
+    return [
+      PinEntity(
+        id: 3,
+        imageUrl: 'https://example.com/3.jpg',
+        author: 'Author 3',
+        title: 'Title 3',
+      ),
+    ];
   }
 }
 
