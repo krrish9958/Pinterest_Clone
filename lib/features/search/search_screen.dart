@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pinterest_clone/features/search/presentation/providers/search_provider.dart';
 
 class SearchScreen extends ConsumerStatefulWidget {
@@ -29,37 +30,35 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final searchAsync = ref.watch(searchProvider);
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(0xFFFFFFFF),
       body: SafeArea(
         child: Column(
           children: [
-            // Rounded search bar
             Padding(
-              padding: const EdgeInsets.fromLTRB(16, 30, 16, 8),
+              padding: const EdgeInsets.fromLTRB(14, 10, 14, 12),
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.grey.shade200,
-                  borderRadius: BorderRadius.circular(30),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.05),
-                      blurRadius: 8,
-                      offset: const Offset(0, 3),
-                    ),
-                  ],
+                  color: const Color(0xFFF1F1F1),
+                  borderRadius: BorderRadius.circular(999),
                 ),
-
                 child: SizedBox(
-                  height: 48,
+                  height: 50,
                   child: TextField(
                     controller: _controller,
                     decoration: const InputDecoration(
-                      hintText: "Search for ideas",
-                      prefixIcon: Icon(Icons.search),
+                      hintText: 'Search for ideas',
+                      prefixIcon: Icon(Icons.search_rounded, size: 22),
                       border: InputBorder.none,
                     ),
                     onSubmitted: (value) {
@@ -69,19 +68,17 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                 ),
               ),
             ),
-
-            // Content
             Expanded(
               child: searchAsync.when(
                 data: (pins) {
                   if (pins.isEmpty) {
                     return const Center(
                       child: Text(
-                        "Search for ideas",
+                        'Try searching for fashion, nails, or room ideas',
                         style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.grey,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black54,
                         ),
                       ),
                     );
@@ -90,24 +87,66 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                   return MasonryGridView.count(
                     controller: _scrollController,
                     crossAxisCount: 2,
-                    mainAxisSpacing: 8,
-                    crossAxisSpacing: 8,
-                    padding: const EdgeInsets.all(8),
+                    mainAxisSpacing: 10,
+                    crossAxisSpacing: 10,
+                    padding: const EdgeInsets.fromLTRB(12, 0, 12, 72),
                     itemCount: pins.length,
                     itemBuilder: (context, index) {
                       final pin = pins[index];
-                      return ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
-                        child: CachedNetworkImage(
-                          imageUrl: pin.imageUrl,
-                          fit: BoxFit.cover,
+                      return TweenAnimationBuilder<double>(
+                        duration: Duration(milliseconds: 220 + ((index % 8) * 35)),
+                        curve: Curves.easeOutCubic,
+                        tween: Tween(begin: 0, end: 1),
+                        builder: (context, value, child) {
+                          return Opacity(
+                            opacity: value,
+                            child: Transform.translate(
+                              offset: Offset(0, (1 - value) * 18),
+                              child: child,
+                            ),
+                          );
+                        },
+                        child: GestureDetector(
+                          onTap: () {
+                            context.push(
+                              '/detail',
+                              extra: {'id': pin.id, 'imageUrl': pin.imageUrl},
+                            );
+                          },
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: CachedNetworkImage(
+                              imageUrl: pin.imageUrl,
+                              fit: BoxFit.cover,
+                              width: double.infinity,
+                              placeholder: (context, url) => Container(
+                                height: 180,
+                                color: const Color(0xFFEDEDED),
+                              ),
+                            ),
+                          ),
                         ),
                       );
                     },
                   );
                 },
-                loading: () => const Center(child: CircularProgressIndicator()),
-                error: (e, _) => Center(child: Text(e.toString())),
+                loading: () => const Center(
+                  child: SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(strokeWidth: 2.2),
+                  ),
+                ),
+                error: (e, _) => Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Text(
+                      'Search failed. Try a simple keyword like "nature" or "fashion".',
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(color: Colors.black54),
+                    ),
+                  ),
+                ),
               ),
             ),
           ],
