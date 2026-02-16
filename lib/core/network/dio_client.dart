@@ -5,15 +5,18 @@ class DioClient {
   static final Dio dio = Dio(
     BaseOptions(
       baseUrl: 'https://api.pexels.com/v1/',
-      headers: {
-        'Authorization':
-            'QC19xITCPyOKI0vwEGgRIYKknB9AJMnYkveIC9fKnlK37XFOxme724S8',
-      },
     ),
   );
 
   static ClerkAuthState? _authState;
   static bool _authInterceptorAttached = false;
+  static bool _isConfigured = false;
+
+  static void configure({required String pexelsApiKey}) {
+    if (_isConfigured) return;
+    _isConfigured = true;
+    dio.options.headers['Authorization'] = pexelsApiKey;
+  }
 
   static void attachClerkAuth(ClerkAuthState? authState) {
     _authState = authState;
