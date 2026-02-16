@@ -152,21 +152,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     onTap: () {
                       context.push(
                         '/detail',
-                        extra: {'id': pin.id, 'imageUrl': pin.imageUrl},
+                        extra: {
+                          'id': pin.id,
+                          'imageUrl': pin.imageUrl,
+                          'author': pin.author,
+                          'title': pin.title,
+                        },
                       );
                     },
                     child: Hero(
                       tag: pin.id,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(20),
-                        child: CachedNetworkImage(
+                        child: _RoundedGridImage(
                           imageUrl: pin.imageUrl,
-                          fit: BoxFit.cover,
-                          width: double.infinity,
-                          placeholder: (context, url) => Container(
-                            color: const Color(0xFFEDEDED),
-                            height: 190,
-                          ),
+                          placeholderHeight: 190,
                         ),
                       ),
                     ),
@@ -202,6 +202,41 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ),
         );
       },
+    );
+  }
+}
+
+class _RoundedGridImage extends StatelessWidget {
+  final String imageUrl;
+  final double placeholderHeight;
+
+  const _RoundedGridImage({
+    required this.imageUrl,
+    required this.placeholderHeight,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return CachedNetworkImage(
+      imageUrl: imageUrl,
+      fit: BoxFit.cover,
+      width: double.infinity,
+      fadeInDuration: Duration.zero,
+      fadeOutDuration: Duration.zero,
+      placeholderFadeInDuration: Duration.zero,
+      imageBuilder: (context, imageProvider) => Image(
+        image: imageProvider,
+        fit: BoxFit.cover,
+        width: double.infinity,
+      ),
+      placeholder: (context, url) => SizedBox(
+        height: placeholderHeight,
+        child: const ColoredBox(color: Color(0xFFEDEDED)),
+      ),
+      errorWidget: (context, url, error) => SizedBox(
+        height: placeholderHeight,
+        child: const ColoredBox(color: Color(0xFFE0E0E0)),
+      ),
     );
   }
 }
