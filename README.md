@@ -1,3 +1,8 @@
+<img width="1918" height="1012" alt="pintrest3" src="https://github.com/user-attachments/assets/b70caed0-e27b-4a7e-990e-457a653562ff" />
+<img width="1918" height="992" alt="pintrest2" src="https://github.com/user-attachments/assets/7ac8887c-56ac-44a8-b1f7-461aa5695e5b" />
+<img width="1918" height="1022" alt="pinterest1" src="https://github.com/user-attachments/assets/a650f8ba-5804-4acd-a036-ca56838d6460" />
+<img width="1901" height="993" alt="image" src="https://github.com/user-attachments/assets/14e8193d-9c96-484c-befe-e2c3d45c140b" />
+<img width="1919" height="990" alt="image" src="https://github.com/user-attachments/assets/91ad6e60-867e-4cda-87c0-34626cff66c0" />
 # Pinterest Clone Mobile App
 
 A Flutter Pinterest clone focused on UI accuracy, clean architecture, and smooth performance.
