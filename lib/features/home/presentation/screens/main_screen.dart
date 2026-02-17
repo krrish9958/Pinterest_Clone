@@ -99,6 +99,7 @@ class _MainScreenState extends State<MainScreen> {
   Future<void> _showProfileSheet() async {
     final authState = ClerkAuth.of(context, listen: false);
     final user = authState.user;
+    final appBg = Theme.of(context).scaffoldBackgroundColor;
     final name = [
       user?.firstName,
       user?.lastName,
@@ -108,14 +109,15 @@ class _MainScreenState extends State<MainScreen> {
     await showModalBottomSheet<void>(
       context: context,
       showDragHandle: false,
-      backgroundColor: Colors.white,
+      backgroundColor: appBg,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
       ),
       clipBehavior: Clip.antiAlias,
       builder: (sheetContext) {
         return Material(
-          color: Colors.white,
+          color: appBg,
+          surfaceTintColor: Colors.transparent,
           child: SafeArea(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 20),
@@ -152,6 +154,8 @@ class _MainScreenState extends State<MainScreen> {
                           context: sheetContext,
                           builder: (context) {
                             return AlertDialog(
+                              backgroundColor: appBg,
+                              surfaceTintColor: Colors.transparent,
                               title: const Text('Log out?'),
                               content: const Text(
                                 'Are you sure you want to log out?',
